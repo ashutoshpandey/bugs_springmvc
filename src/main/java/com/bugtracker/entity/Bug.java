@@ -29,8 +29,11 @@ public class Bug {
 	
 	private String status;
 	
-	@Column(name="project_id")
-	private Date createdOn;
+	@Column(name="created_at")
+	private Date createdAt;
+	
+	@Column(name="updated_at")
+	private Date updatedAt;
 
 	public int getId() {
 		return id;
@@ -80,12 +83,20 @@ public class Bug {
 		this.status = status;
 	}
 
-	public Date getCreatedOn() {
-		return createdOn;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public String getTitle() {

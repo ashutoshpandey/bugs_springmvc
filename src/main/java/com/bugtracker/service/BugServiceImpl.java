@@ -33,9 +33,9 @@ public class BugServiceImpl implements BugService {
 	}
 
 	@Override
-	public List<Bug> getBugs(int projectId) {
+	public List<Bug> getBugs(int projectId, String bugType) {
 		
-		return dao.getBugs(projectId);
+		return dao.getBugs(projectId, bugType);
 	}
 
 	@Override

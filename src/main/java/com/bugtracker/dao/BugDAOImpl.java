@@ -21,7 +21,7 @@ public class BugDAOImpl implements BugDAO {
 	}
 
 	@Override
-	public List<Bug> getBugs(int projectId) {
+	public List<Bug> getBugs(int projectId, String bugType) {
 		
 		return null;
 	}

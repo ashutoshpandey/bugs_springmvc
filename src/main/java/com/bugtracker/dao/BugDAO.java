@@ -15,7 +15,7 @@ public interface BugDAO {
 
 	boolean updateBug(Bug bug);
 
-	List<Bug> getBugs(int projectId);
+	List<Bug> getBugs(int projectId, String bugType);
 
 	boolean saveBugComment(BugComment bugComment);
 

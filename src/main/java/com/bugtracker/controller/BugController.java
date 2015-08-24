@@ -350,7 +350,7 @@ public class BugController {
 
             String bugType = request.getParameter("bug_type");
         	
-            List<Bug> bugs = service.getBugs(projectId);
+            List<Bug> bugs = service.getBugs(projectId, bugType);
 
             if(null!=bugs && !bugs.isEmpty()){
             	

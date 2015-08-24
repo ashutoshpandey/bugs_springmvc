@@ -23,7 +23,7 @@ public interface BugService {
 
 	List<BugFile> getBugFiles(Integer bugId);
 
-	List<Bug> getBugs(int projectId);
+	List<Bug> getBugs(int projectId, String bugType);
 
     List<BugComment> getBugComments(int bugId);
 
