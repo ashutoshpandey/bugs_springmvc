@@ -1,19 +1,46 @@
 package com.bugtracker.controller;
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.bugtracker.entity.Bug;
+import com.bugtracker.entity.BugComment;
+import com.bugtracker.entity.BugFile;
+import com.bugtracker.entity.Project;
+import com.bugtracker.entity.User;
+import com.bugtracker.pojo.BugCommentData;
+import com.bugtracker.pojo.BugData;
+import com.bugtracker.service.BugService;
+import com.bugtracker.service.ProjectService;
+import com.bugtracker.service.UserService;
 
 @Controller
 public class BugController {
 
+	@Autowired
+	private BugService service;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private ProjectService projectService;
+	
 //    public String __construct(ModelMap map, HttpServletRequest request){
 //        View::share("root", URL::to("/"));
 //        View::share("name", request.getSession().getAttribute("name"));
 //        View::share("userType", request.getSession().getAttribute("userType"));
 //    }
 
+    @RequestMapping("/")
     public String createBug(ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
@@ -22,38 +49,43 @@ public class BugController {
 
         Object projectId = request.getSession().getAttribute("currentProject");
 
-        $users = User::all();
+        List<User> users = userService.getAllUsers();
 
-        if(null!=projectId)
-            return View::make("bugs.create")->with("projectId", $projectId)->with("users", $users);
+        if(null!=projectId){
+        	map.addAttribute("projectId", projectId);
+        	map.addAttribute("users", users);
+            return "bugs/create";
+        }
         else
             return "redirect:/";
     }
 
+    @RequestMapping("/")
+    @ResponseBody
     public String saveBug(ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
+        Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "not logged";        
 
-        $bug = new Bug();
+        Bug bug = new Bug();
 
-        $bug->title = Input::get("title");
-        $bug->description = Input::get("description");
-        $bug->severity = Input::get("severity");
-        $bug->created_by = request.getSession().getAttribute("userId")
-        $bug->project_id = request.getSession().getAttribute("currentProject");
-        $bug->status = "active";
+        bug.setTitle(request.getParameter("title"));
+        bug.setDescription(request.getParameter("description"));
+        bug.setSeverity(request.getParameter("severity"));
+        bug.setCreatedBy(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
+        bug.setProjectId(Integer.parseInt(request.getSession().getAttribute("currentProject").toString()));
+        bug.setStatus("active");
 
-        $bug->save();
-
+        service.saveBug(bug);
+/*
         $files = Input::file("file");
         if(isset($files))
             $fileCount = count($files);
         else
             $fileCount = 0;
 
-        $users = Input::get("users");
+        $users(request.getParameter(("users");
 
         if(isset($users))
             $userCount = count($users);
@@ -71,7 +103,7 @@ public class BugController {
 
                 $bugFile = new BugFile();
 
-                $bugFile->bug_id = $bug->id;
+                $bugFile->bug_id = bug.setid;
                 $bugFile->file_name = $filename;
                 $bugFile->saved_file_name = $savedFileName;
                 $bugFile->status = "active";
@@ -85,127 +117,138 @@ public class BugController {
             foreach($users as int userId){
                 $bugUser = new BugUser();
 
-                $bugUser->bug_id = $bug->id;
+                $bugUser->bug_id = bug.setid;
                 $bugUser->user_id = int userId;
                 $bugUser->status = "active";
 
                 $bugUser->save();
 
                 $user = User::finduserId;
-                $project = Project::find($bug->project_id);
+                $project = Project::find(bug.setproject_id);
 
                 if(isset($user))
-                    $this->sendNewBugEmail($user->name, $user->email, $project->name, $bug->title, $bug->description, null);
+                    $this->sendNewBugEmail($user->name, $user->email, $project->name, bug.settitle, bug.setdescription, null);
             }
         }
-
-        echo "done";
+*/
+        return "done";
     }
 
-    public String editBug($id){
+    @RequestMapping("/")
+    public String editBug(Integer id, ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
+        Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "redirect:/";
 
-        $bug = Bug::find($id);
+        Bug bug = service.findBug(id);
 
-        return View::make("bugs.edit")->with("bug", $bug);
+        map.addAttribute("bug", bug);
+        
+        return "bugs.edit";
     }
 
+    @RequestMapping("/")
+    @ResponseBody
     public String updateBug(ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
+        Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "not logged";
 
-        $id = Input::get("id");
+        int id = Integer.parseInt(request.getParameter("id"));
 
-        $bug = Bug::find($id);
+        Bug bug = service.findBug(id);
 
-        if($bug){
+        if(null!=bug){
 
-            $title = Input::get("title");
-            $description = Input::get("description");
-            $status = Input::get("status");
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            String status = request.getParameter("status");
 
-            if(isset($title))
-                $bug->title = Input::get("title");
+            if(null!=title)
+                bug.setTitle(title);
 
-            if(isset($description))
-                $bug->description = Input::get("description");
+            if(null!=description)
+                bug.setDescription(request.getParameter("description"));
 
-            if(isset($status))
-                $bug->status = Input::get("status");
+            if(null!=status)
+                bug.setStatus(request.getParameter("status"));
 
-            $bug->save();
+            service.updateBug(bug);
 
-            echo "done";
+            return "done";
         }
         else
-            echo "invalid";
+            return "invalid";
     }
 
+    @RequestMapping("/")
+    @ResponseBody
     public String changeBugStatus(ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
+        Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "not logged";
 
-        $id = Input::get("id");
+        int id = Integer.parseInt(request.getParameter("id"));
 
-        $bug = Bug::find($id);
+        Bug bug = service.findBug(id);
 
-        if($bug){
+        if(null!=bug){
 
-            $status = Input::get("status");
+            String status = request.getParameter("status");
 
-            if(isset($status)) {
-                $bug->status = Input::get("status");
-                $bug->save();
+            if(null!=status) {
+                bug.setStatus(request.getParameter("status"));
+                
+                service.changeBugStatus(bug);
 
-                BugUser::where("bug_id", "=", $bug->id) ->update(["status" => $bug->status]);
+                //BugUser::where("bug_id", "=", bug.setid) ->update(["status" => bug.setstatus]);
 
-                echo "done";
+                return "done";
             }
             else
-                echo "invalid";
+                return "invalid";
         }
         else
-            echo "invalid";
+            return "invalid";
     }
 
-    public String listBugs($projectId){
+    @RequestMapping("/")
+    public String listBugs(Integer projectId, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
+        Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "redirect:/";
 
-        if(isset($projectId)){
+        if(null!=projectId){
 
-            Session::put("currentProject", $projectId);
+            request.getSession().setAttribute("currentProject", projectId);
 
-            return View::make("bugs.list");
+            return "bugs/list";
         }
         else
             return "redirect:/";
     }
 
+    @RequestMapping("/")
+    @ResponseBody
     public String saveBugComment(ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
+        Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "not logged";
 
-        $bugComment = new BugComment();
+        BugComment bugComment = new BugComment();
 
-        $bugComment->comment= Input::get("comment");
-        $bugComment->created_by = request.getSession().getAttribute("userId")
-        $bugComment->bug_id = request.getSession().getAttribute("currentBugId");
-        $bugComment->status = "active";
+        bugComment.setComment(request.getParameter("comment"));
+        bugComment.setCreatedBy(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
+        bugComment.setBugId(Integer.parseInt(request.getSession().getAttribute("currentBugId").toString()));
+        bugComment.setStatus("active");
 
-        $bugComment->save();
-
+        service.saveBugComment(bugComment);
+/*
         $files = Input::file("file");
         $fileCount = count($files);
 
@@ -220,7 +263,7 @@ public class BugController {
 
                 $bugCommentFile = new BugCommentFile();
 
-                $bugCommentFile->bug_comment_id = $bugComment->id;
+                $bugCommentFile->bug_comment_id = bugComment.setid;
                 $bugCommentFile->file_name = $filename;
                 $bugCommentFile->saved_file_name = $savedFileName;
                 $bugCommentFile->status = "active";
@@ -228,30 +271,32 @@ public class BugController {
                 $bugCommentFile->save();
             }
         }
-
-        echo "done";
+*/
+        return "done";
     }
 
-    public String bugDetail($bugId){
+    @RequestMapping("/")
+    public String bugDetail(Integer bugId, ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
+        Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "redirect:/";
 
-        if(isset($bugId)){
+        if(null!=bugId){
 
-            $bug = Bug::find($bugId);
-            $project = Project::find($bug->project_id);
+            Bug bug = service.findBug(bugId);
+            Project project = projectService.findProject(bug.getProjectId());
 
-            if(isset($bug) && isset($project)){
-                Session::put("currentBugId", $bugId);
+            if(null!=bug && null!=project){
+                request.getSession().setAttribute("currentBugId", bugId);
 
-                $bugFiles = BugFile::where("bug_id", "=", $bugId)->get();
+                List<BugFile> bugFiles = service.getBugFiles(bugId);
 
-                return View::make("bugs.detail")
-                    ->with("project", $project)
-                    ->with("bug", $bug)
-                    ->with("bugFiles", $bugFiles);
+                map.addAttribute("project", project);
+                map.addAttribute("bug", bug);
+                map.addAttribute("bugFiles", bugFiles);
+                
+                return "bugs/detail";
             }
             else
                 return "redirect:/";
@@ -260,84 +305,125 @@ public class BugController {
             return "redirect:/";
     }
 
-    public String downloadBug($bugId){
+    @RequestMapping("/")
+    public String downloadBug(Integer bugId){
 
-        if(isset($bugId)){
+        if(null!=bugId){
 
-            $bug = Bug::find($bugId);
+            Bug bug = service.findBug(bugId);
 
-            if(isset($bug)){
+            if(null!=bug){
 
-                $bugFiles = BugFile::where("bug_id", "=", $bugId)->get();
+                List<BugFile> bugFiles = service.getBugFiles(bugId);
 
-                if(isset($bugFiles)){
+                if(null!=bugFiles && !bugFiles.isEmpty()){
 
-                    foreach($bugFiles as $bugFile){
-
-                    }
+//                    for(BugFile bugFile : bugFiles){
+//
+//                    }
                 }
             }
         }
+        
+        return null;
     }
 
     /****************** json methods ***********************/
 
-    public String dataListBugs(ModelMap map, HttpServletRequest request){
+    @RequestMapping("/")
+    @ResponseBody
+    public BugData dataListBugs(ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
-        if(null==userId)
-            return json_encode(array("message" => "not logged"));
-
-        $projectId = request.getSession().getAttribute("currentProject");
-
-        $bugType = Input::get("bug_type");
-
-        if(isset($projectId)){
-            $bugs = Bug::where("project_id", "=", $projectId)->where("status","=",$bugType)->get();
-
-            if($bugs && count($bugs)>0)
-                return json_encode(array("found" => true, "bugs" => $bugs->toArray(), "message" => "logged"));
-            else
-                return json_encode(array("found" => false, "message" => "logged"));
+    	BugData bugData = new BugData();
+    	
+        Object userId = request.getSession().getAttribute("userId");
+        if(null==userId){
+        
+        	bugData.setMessage("not logged");
+            
+        	return bugData;
         }
-        else
-            return json_encode(array("found" => false, "message" => "logged"));
+
+        if(null != request.getSession().getAttribute("currentProject")){
+
+        	int projectId = Integer.parseInt(request.getSession().getAttribute("currentProject").toString());
+
+            String bugType = request.getParameter("bug_type");
+        	
+            List<Bug> bugs = service.getBugs(projectId);
+
+            if(null!=bugs && !bugs.isEmpty()){
+            	
+            	bugData.setBugs(bugs);
+            	bugData.setFound(true);
+            	bugData.setMessage("logged");
+            }
+            else{
+            	bugData.setFound(false);
+            	bugData.setMessage("logged");
+            }
+        }
+        else{
+        	bugData.setFound(false);
+        	bugData.setMessage("logged");
+        }
+        
+        return bugData;
     }
 
-    public String dataListBugComments(ModelMap map, HttpServletRequest request){
+    @RequestMapping("/")
+    @ResponseBody
+    public BugCommentData dataListBugComments(ModelMap map, HttpServletRequest request){
 
-        Object userId = request.getSession().getAttribute("userId")
-        if(null==userId)
-            return json_encode(array("message" => "not logged"));
+    	BugCommentData bugCommentData = new BugCommentData();
+    	
+        Object userId = request.getSession().getAttribute("userId");
+        if(null==userId){
+        	bugCommentData.setMessage("not logged");
 
-        $bugId = request.getSession().getAttribute("currentBugId");
-
-        if(isset($bugId)){
-            $comments = BugComment::with(array("User", "BugCommentFiles"))->where("bug_id", "=", $bugId)->get();
-
-            if($comments && count($comments)>0)
-                return json_encode(array("found" => true, "comments" => $comments->toArray(), "message" => "logged"));
-            else
-                return json_encode(array("found" => false, "message" => "logged"));
+        	return bugCommentData;
         }
-        else
-            return json_encode(array("found" => false, "message" => "logged"));
+
+        if(null != request.getSession().getAttribute("currentBugId")){
+            int bugId = Integer.parseInt(request.getSession().getAttribute("currentBugId").toString());
+
+            List<BugComment> bugComments = service.getBugComments(bugId);
+
+            if(null!=bugComments && !bugComments.isEmpty()){
+            	
+            	bugCommentData.setBugComments(bugComments);
+            	bugCommentData.setFound(true);
+            	bugCommentData.setMessage("logged");
+            }
+            else{
+            	bugCommentData.setFound(false);
+            	bugCommentData.setMessage("logged");
+            }
+        }
+        else{
+        	bugCommentData.setFound(false);
+        	bugCommentData.setMessage("logged");
+        }
+        
+        return bugCommentData;
     }
 
-    public String sendNewBugEmail($username, $email, $project, $bugTitle, $description, $attachments){
-        $portal = "BUGS@YOGASMOGA";
+    public void sendNewBugEmail(String username, String email, String project, String bugTitle, String description, List<String> attachments){
+        String portal = "BUGS@YOGASMOGA";
 
-        $data["project"] = $project;
-        $data["description"] = $description;
-        $data["username"] = $username;
-        $data["portal"] = $portal;
-        $data["bugTitle"] = $bugTitle;
+        HashMap<String, String> data = new HashMap<String, String>();
+        
+        data.put("project", project);
+        data.put("description", description);
+        data.put("username", username);
+        data.put("portal", portal);
+        data.put("bugTitle", bugTitle);
 
-        $result = Mail::send("emails.new-bug", $data, function($message) use ($email, $attachments) {
-            $message->to($email);
-            $message->subject("New bug added at yogasmoga");
-            $message->from("info@yogasmoga.com");
-        });
+//        $result = Mail::send("emails.new-bug", $data, function($message) use ($email, $attachments) {
+//            $message->to($email);
+//            $message->subject("New bug added at yogasmoga");
+//            $message->from("info@yogasmoga.com");
+//        });
 
 //            if(isset($attachments) && count($attachments)>0) {
 //
