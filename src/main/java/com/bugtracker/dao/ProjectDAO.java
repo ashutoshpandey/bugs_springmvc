@@ -1,5 +1,7 @@
 package com.bugtracker.dao;
 
+import java.util.List;
+
 import com.bugtracker.entity.Project;
 
 public interface ProjectDAO {
@@ -8,7 +10,7 @@ public interface ProjectDAO {
 
 	boolean updateProject(Project project);
 
-	boolean getProjects(String status);
+	List<Project> getProjects(String status);
 
 	Project findProject(int projectId);
 }

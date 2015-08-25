@@ -3,12 +3,14 @@ package com.bugtracker.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bugtracker.dao.BugDAO;
 import com.bugtracker.entity.Bug;
 import com.bugtracker.entity.BugComment;
 import com.bugtracker.entity.BugFile;
 
+@Service
 public class BugServiceImpl implements BugService {
 
 	@Autowired

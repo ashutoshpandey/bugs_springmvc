@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,13 +8,16 @@
         Administrator Section
     </title>
 
-    {{HTML::style(asset("/public/css/theme/transdmin.css"))}}
-    {{HTML::style(asset("/public/css/common.css"))}}
-    {{HTML::style(asset("/public/css/projects/edit.css"))}}
+<style type="text/css">
+    @import url("<c:url value="/static/css/theme/transdmin.css"/>");
+    @import url("<c:url value="/static/css/common.css"/>");
+    @import url("<c:url value="/static/css/bugs/edit.css"/>");
+</style>
 
-    {{HTML::script(asset("/public/js/jquery-1.10.2.js"))}}
-    {{HTML::script(asset("/public/js/jquery.validate.min.js"))}}
-    {{HTML::script(asset("/public/js/projects/edit.js"))}}
+    <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/jquery.validate.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/bugs/common.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/bugs/edit.js"/>"></script>
 
 </head>
 <body>
@@ -20,7 +25,7 @@
 
     <div id="wrapper" class="ys-adminform">
 
-        @include('includes.header')
+        <jsp:include page="../includes/header.jsp"/>
 
         <form name="admin-section-form" class="admin-section-form frm">
 
@@ -52,6 +57,6 @@
     </div>
 </div>
 
-@include('includes.footer')
+<jsp:include page="../includes/footer.jsp"/>
 </body>
 </html>

@@ -1,10 +1,14 @@
 package com.bugtracker.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bugtracker.dao.ProjectDAO;
 import com.bugtracker.entity.Project;
 
+@Service
 public class ProjectServiceImpl implements ProjectService{
 
 	@Autowired
@@ -23,7 +27,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public boolean getProjects(String status) {
+	public List<Project> getProjects(String status) {
 		
 		return dao.getProjects(status);
 	}
