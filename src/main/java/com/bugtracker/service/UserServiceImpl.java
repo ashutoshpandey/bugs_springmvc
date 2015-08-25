@@ -37,4 +37,10 @@ public class UserServiceImpl implements UserService {
 		
 		return dao.updateUser(user);
 	}
+
+	@Override
+	public User isValidUser(String email, String password) {
+
+		return dao.isValidUser(email, password);
+	}
 }

@@ -40,7 +40,7 @@ public class BugController {
 //        View::share("userType", request.getSession().getAttribute("userType"));
 //    }
 
-    @RequestMapping("/")
+    @RequestMapping("/create-bug")
     public String createBug(ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
@@ -60,7 +60,7 @@ public class BugController {
             return "redirect:/";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/save-bug")
     @ResponseBody
     public String saveBug(ModelMap map, HttpServletRequest request){
 
@@ -134,7 +134,7 @@ public class BugController {
         return "done";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/edit-bug")
     public String editBug(Integer id, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
@@ -145,10 +145,10 @@ public class BugController {
 
         map.addAttribute("bug", bug);
         
-        return "bugs.edit";
+        return "bugs/edit";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/update-bug")
     @ResponseBody
     public String updateBug(ModelMap map, HttpServletRequest request){
 
@@ -183,7 +183,7 @@ public class BugController {
             return "invalid";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/change-bug-status")
     @ResponseBody
     public String changeBugStatus(ModelMap map, HttpServletRequest request){
 
@@ -215,7 +215,7 @@ public class BugController {
             return "invalid";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/list-bugs")
     public String listBugs(Integer projectId, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
@@ -232,7 +232,7 @@ public class BugController {
             return "redirect:/";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/save-bug-comment")
     @ResponseBody
     public String saveBugComment(ModelMap map, HttpServletRequest request){
 
@@ -275,7 +275,7 @@ public class BugController {
         return "done";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/bug-detail")
     public String bugDetail(Integer bugId, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
@@ -305,7 +305,7 @@ public class BugController {
             return "redirect:/";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/download-bug")
     public String downloadBug(Integer bugId){
 
         if(null!=bugId){
@@ -330,7 +330,7 @@ public class BugController {
 
     /****************** json methods ***********************/
 
-    @RequestMapping("/")
+    @RequestMapping("/data-list-bugs")
     @ResponseBody
     public BugData dataListBugs(ModelMap map, HttpServletRequest request){
 
@@ -371,7 +371,7 @@ public class BugController {
         return bugData;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/data-list-bug-comments")
     @ResponseBody
     public BugCommentData dataListBugComments(ModelMap map, HttpServletRequest request){
 

@@ -20,7 +20,12 @@
 		<javax.servlet-api.version>2.5</javax.servlet-api.version>
 		<javax.jstl-taglibs.version>1.1.2</javax.jstl-taglibs.version>
 
+		<mysql.version>5.1.24</mysql.version>
+
 		<maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+
+		<slf4j.version>1.6.1</slf4j.version>
+		<log4j.version>1.2.14</log4j.version>
 	</properties>
 
 	<dependencies>
@@ -77,6 +82,32 @@
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
+		</dependency>
+		
+		<!-- The Simple Logging Facade for Java or (SLF4J) serves as a simple facade 
+			or abstraction for various logging frameworks, e.g. java.util.logging, log4j 
+			and logback, allowing the end user to plug in the desired logging framework 
+			at deployment time. -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- spring dependencies -->
@@ -151,7 +182,7 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- hibernate dependencies -->
+		<!-- hibernate/persistence dependencies -->
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -159,6 +190,27 @@
 			<version>${hibernate.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>4.0.2.GA</version>
+	    	<type>jar</type>
+	    	<scope>compile</scope>
+		</dependency>
+	    
+	    <dependency>
+	    	<groupId>javax.persistence</groupId>
+	    	<artifactId>persistence-api</artifactId>
+	    	<version>1.0</version>
+	    	<type>jar</type>
+	    	<scope>compile</scope>
+	    </dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- java mail dependency -->

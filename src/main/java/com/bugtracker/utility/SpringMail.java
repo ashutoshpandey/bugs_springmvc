@@ -1,7 +1,6 @@
 package com.bugtracker.utility;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.MimeMessage;
@@ -9,7 +8,6 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
  
 public class SpringMail
 {

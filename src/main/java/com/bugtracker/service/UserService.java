@@ -13,4 +13,6 @@ public interface UserService {
 	boolean saveUser(User user);
 	
 	boolean updateUser(User user);
+
+	User isValidUser(String email, String password);
 }

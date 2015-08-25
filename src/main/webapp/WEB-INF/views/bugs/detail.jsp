@@ -15,6 +15,8 @@
     @import url("<c:url value="/static/css/bugs/detail.css"/>");
 </style>
 
+	<jsp:include page="../includes/common.jsp"/>
+
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/jquery.validate.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/bugs/common.js"/>"></script>
