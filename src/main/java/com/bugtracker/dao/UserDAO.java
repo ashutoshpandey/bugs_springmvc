@@ -2,11 +2,8 @@ package com.bugtracker.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.bugtracker.entity.User;
 
-@Service
 public interface UserDAO {
 
 	List<User> getAllUsers();
