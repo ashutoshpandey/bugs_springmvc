@@ -13,4 +13,6 @@ public interface ProjectService {
 	List<Project> getProjects(String status);
 	
 	Project findProject(int projectId);
+
+	int getProjectCount(String type);
 }

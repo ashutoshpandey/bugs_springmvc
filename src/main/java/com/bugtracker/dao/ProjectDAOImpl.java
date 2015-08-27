@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,17 +12,6 @@ import com.bugtracker.entity.Project;
 @Transactional
 @Repository
 public class ProjectDAOImpl extends HibernateUtil implements ProjectDAO {
-
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	public ProjectDAOImpl(){
-		
-	}
-	
-	public ProjectDAOImpl(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
 
 	@Override
 	public boolean saveProject(Project project) {
@@ -68,4 +55,14 @@ public class ProjectDAOImpl extends HibernateUtil implements ProjectDAO {
 		return query.list().isEmpty() ? null : (Project)query.list().get(0);
 	}
 
+	@Override
+	public int getProjectCount(String type) {
+		
+		Session session = getCurrentSession();
+		
+		Query query = session.createQuery("from Project as pr where pr.status=:status");
+		query.setString("status", type);
+		
+		return query.list().size();
+	}
 }

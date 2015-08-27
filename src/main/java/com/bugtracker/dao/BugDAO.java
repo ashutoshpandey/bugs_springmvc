@@ -5,6 +5,7 @@ import java.util.List;
 import com.bugtracker.entity.Bug;
 import com.bugtracker.entity.BugComment;
 import com.bugtracker.entity.BugFile;
+import com.bugtracker.entity.BugUser;
 
 public interface BugDAO {
 
@@ -21,4 +22,8 @@ public interface BugDAO {
 	List<BugComment> getBugComments(int bugId);
 
 	List<BugFile> getBugFiles(Integer bugId);
+
+	int getBugCount(String type);
+
+	List<BugUser> getUserBugs(Integer userId);
 }

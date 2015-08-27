@@ -1,8 +1,6 @@
-package com.bugtracker.core;
+package com.bugtracker.config;
  
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import com.bugtracker.config.AppConfig;
  
 public class SpringMvcInitializer 
        extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -21,5 +19,4 @@ public class SpringMvcInitializer
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
- 
 }

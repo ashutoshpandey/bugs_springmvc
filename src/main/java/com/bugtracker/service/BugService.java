@@ -5,6 +5,7 @@ import java.util.List;
 import com.bugtracker.entity.Bug;
 import com.bugtracker.entity.BugComment;
 import com.bugtracker.entity.BugFile;
+import com.bugtracker.entity.BugUser;
 
 public interface BugService {
 
@@ -25,4 +26,8 @@ public interface BugService {
     List<BugComment> getBugComments(int bugId);
 
     boolean sendNewBugEmail(String username, String email, String project, String bugTitle, String description, List<String> attachments);
+
+	int getBugCount(String type);
+
+	List<BugUser> getUserBugs(Integer userId);
 }

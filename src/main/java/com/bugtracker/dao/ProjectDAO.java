@@ -13,4 +13,6 @@ public interface ProjectDAO {
 	List<Project> getProjects(String status);
 
 	Project findProject(int projectId);
+
+	int getProjectCount(String type);
 }

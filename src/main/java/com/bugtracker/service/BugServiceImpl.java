@@ -9,6 +9,7 @@ import com.bugtracker.dao.BugDAO;
 import com.bugtracker.entity.Bug;
 import com.bugtracker.entity.BugComment;
 import com.bugtracker.entity.BugFile;
+import com.bugtracker.entity.BugUser;
 
 @Service
 public class BugServiceImpl implements BugService {
@@ -70,5 +71,17 @@ public class BugServiceImpl implements BugService {
 	public List<BugFile> getBugFiles(Integer bugId) {
 
 		return dao.getBugFiles(bugId);
+	}
+
+	@Override
+	public int getBugCount(String type) {
+		
+		return dao.getBugCount(type);
+	}
+
+	@Override
+	public List<BugUser> getUserBugs(Integer userId) {
+		
+		return dao.getUserBugs(userId);
 	}
 }

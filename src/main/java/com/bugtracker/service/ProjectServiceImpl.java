@@ -37,4 +37,10 @@ public class ProjectServiceImpl implements ProjectService{
 		
 		return dao.findProject(projectId);
 	}
+
+	@Override
+	public int getProjectCount(String type) {
+
+		return dao.getProjectCount(type);
+	}
 }
