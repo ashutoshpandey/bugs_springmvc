@@ -69,10 +69,10 @@ function getUserTable(data){
             str += '<td>' + user.user_type + '</td>';
 
             str += '<td>';
-            str += '<a href="' + root + 'edit-user/' + user.id + '" title="Edit user"><img class="icon" src="' + root + 'public/images/edit.png"/></a>';
+            str += '<a href="' + root + 'edit-user/' + user.id + '" title="Edit user"><img class="icon" src="' + root + 'static/images/edit.png"/></a>';
             str += '&nbsp;&nbsp;&nbsp;';
             str += '&nbsp;&nbsp;&nbsp;';
-            str += '<a href="javascript:void(0)" class="remove-user" rel="' + user.id + '" title="Remove user"><img class="icon" src="' + root + 'public/images/remove.png"/></a>';
+            str += '<a href="javascript:void(0)" class="remove-user" rel="' + user.id + '" title="Remove user"><img class="icon" src="' + root + 'static/images/remove.png"/></a>';
             str += '</td>';
 
             str += '</tr>';

@@ -12,7 +12,6 @@
     @import url("<c:url value="/static/css/jquery.dataTables.css"/>");
     @import url("<c:url value="/static/css/common.css"/>");
     @import url("<c:url value="/static/css/theme/transdmin.css"/>");
-    @import url("<c:url value="/static/css/users/list.css"/>");
 </style>
 
 	<jsp:include page="../includes/common.jsp"/>

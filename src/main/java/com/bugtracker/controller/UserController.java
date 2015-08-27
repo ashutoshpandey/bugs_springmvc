@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bugtracker.entity.BugUser;
@@ -71,7 +72,7 @@ public class UserController {
     public String saveUser(User user, HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("userId");
-        if(null!=objUserId)
+        if(null==objUserId)
             return "not logged";
 
         User exisingUser = service.findUserByEmail(user.getEmail());
@@ -138,7 +139,7 @@ public class UserController {
     }
 
 	@RequestMapping("/edit-user")
-    public String editUser(Integer userId, HttpServletRequest request, ModelMap map){
+    public String editUser(@RequestParam Integer userId, HttpServletRequest request, ModelMap map){
 
         if(null==userId)
             return "redirect:/";
@@ -221,20 +222,13 @@ public class UserController {
         	return userData;
         }
 
-        if(null != request.getSession().getAttribute("currentBugId")){
+        List<User> users = service.getAllUsers();
 
-            List<User> users = service.getAllUsers();
-
-            if(null!=users && !users.isEmpty()){
-            	
-            	userData.setUsers(users);
-            	userData.setFound(true);
-            	userData.setMessage("logged");
-            }
-            else{
-            	userData.setFound(false);
-            	userData.setMessage("logged");
-            }
+        if(null!=users && !users.isEmpty()){
+        	
+        	userData.setUsers(users);
+        	userData.setFound(true);
+        	userData.setMessage("logged");
         }
         else{
         	userData.setFound(false);

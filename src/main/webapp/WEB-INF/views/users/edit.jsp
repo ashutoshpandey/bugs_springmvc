@@ -65,7 +65,7 @@
                         <option>User</option>
                     </select>
                     <script type="text/javascript">
-                        $("select[name='user_type']").val("${user.user_type}");
+                        $("select[name='user_type']").val("${user.userType}");
                     </script>
                 </div>
             </div>

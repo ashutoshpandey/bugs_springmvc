@@ -33,7 +33,8 @@ function createUser(){
 
             $(".message").html(result);
 
-            $("input[type='text'], input[type='password'], textarea").val('');
+            if(result.indexOf("created")>-1)
+            	$("input[type='text'], input[type='password'], textarea").val('');
         }
     })
 }
