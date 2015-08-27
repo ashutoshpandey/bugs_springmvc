@@ -15,8 +15,10 @@
     @import url("<c:url value="/static/css/projects/create.css"/>");
 </style>
 
+	<jsp:include page="../includes/common.jsp"/>
+
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/static/js/jquery.dataTables.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/jquery.validate.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/common.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/projects/create.js"/>"></script>
 
@@ -26,10 +28,10 @@
 
     <div id="wrapper" class="main-container">
 
-        @include('includes.header')
+        <jsp:include page="../includes/header.jsp"/>
 
         <div style="margin-bottom: 20px;">
-            <a href="{{$root}}/list-projects">Project list</a>
+            <a href="${root}/list-projects">Project list</a>
 
             <br/><br/>
             <h1 class="form-header">Create a new project</h1>
@@ -63,6 +65,6 @@
     <div class="gradient"></div>
 </div>
 
-@include('includes.footer')
+<jsp:include page="../includes/footer.jsp"/>
 </body>
 </html>

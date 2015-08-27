@@ -14,6 +14,8 @@
     @import url("<c:url value="/static/css/users/edit.css"/>");
 </style>
 
+	<jsp:include page="../includes/common.jsp"/>
+
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/common.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/users/edit.js"/>"></script>
@@ -30,7 +32,7 @@
 
             <div class="header">
                 <div>
-                    <a href="{{$root}}/list-users">View users</a> <br/>
+                    <a href="${root}/list-users">View users</a> <br/>
                 </div>
 
                 <br/>
@@ -41,19 +43,19 @@
             <div class="content">
 
                 <div class="form-row">
-                    {{$user->email}}
+                    ${user.email}
                 </div>
 
                 <div class="form-row">
-                    <input id="name" name="name" class="input" placeholder="Name" type="text" value="{{$user->name}}"/>
+                    <input id="name" name="name" class="input" placeholder="Name" type="text" value="${user.name}"/>
                 </div>
 
                 <div class="form-row">
-                    <input id="password" name="password" class="input" placeholder="Password" type="password" value="{{$user->password}}"/>
+                    <input id="password" name="password" class="input" placeholder="Password" type="password" value="${user.password}"/>
                 </div>
 
                 <div class="form-row">
-                    <input id="confirm_password" name="confirm_password" class="input" placeholder="Confirm password" type="password" value="{{$user->password}}"/>
+                    <input id="confirm_password" name="confirm_password" class="input" placeholder="Confirm password" type="password" value="${user.password}"/>
                 </div>
 
                 <div class="form-row">
@@ -63,7 +65,7 @@
                         <option>User</option>
                     </select>
                     <script type="text/javascript">
-                        $("select[name='user_type']").val("{{$user->user_type}}");
+                        $("select[name='user_type']").val("${user.user_type}");
                     </script>
                 </div>
             </div>

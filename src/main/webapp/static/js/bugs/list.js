@@ -96,10 +96,10 @@ function getBugTable(data){
             str += '<td class="' + bug.severity.toLowerCase() + '">' + bug.severity + '</td>';
 
             str += '<td>';
-            str += '<a href="' + root + 'bug-detail/' + bug.id + '" title="View detail"><img class="icon" src="' + root + 'public/images/view.png"/></a>';
+            str += '<a href="' + root + 'bug-detail/' + bug.id + '" title="View detail"><img class="icon" src="' + root + 'static/images/view.png"/></a>';
             str += '&nbsp;&nbsp;&nbsp;';
             str += '&nbsp;&nbsp;&nbsp;';
-            str += '<a href="javascript:void(0)" rel="' + bug.id + '" class="change_status" title="Change status"><img class="icon" src="' + root + 'public/images/change-status.jpg"/></a>';
+            str += '<a href="javascript:void(0)" rel="' + bug.id + '" class="change_status" title="Change status"><img class="icon" src="' + root + 'static/images/change-status.jpg"/></a>';
             str += '</td>';
 
             str += '</tr>';

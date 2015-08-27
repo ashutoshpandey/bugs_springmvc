@@ -295,6 +295,7 @@ public class BugController {
                 map.addAttribute("project", project);
                 map.addAttribute("bug", bug);
                 map.addAttribute("bugFiles", bugFiles);
+                map.addAttribute("imageTypes", new String[]{"jpeg","jpg","gif","png", "pdf", "doc", "docx"});
                 
                 return "bugs/detail";
             }

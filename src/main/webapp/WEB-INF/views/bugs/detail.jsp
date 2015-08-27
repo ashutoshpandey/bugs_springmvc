@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html>
@@ -32,54 +33,55 @@
 
         <div class="header">
             <div class="form-row">
-                <a href="{{$root}}/list-bugs/{{$project->id}}">Back</a>
+                <a href="${root}/list-bugs/${project.id}">Back</a>
                 <br/>
             </div>
             <br/>
 
             <div class="form-row">
-                Project: <b>{{$project->name}}</b><br/>
+                Project: <b>${project.name}</b><br/>
             </div>
 
             <div class="form-row">
-                Posted by : <span style="color:#478bff; font-weight: 700">{{$bug->user->name}}</span> on <b>( {{date('d-M-Y h:i A', strtotime($bug->created_at))}} )</b>
+                Posted by : <span style="color:#478bff; font-weight: 700">${bug.user.name}</span> on <b>( {{date('d-M-Y h:i A', strtotime($bug->created_at))} )</b>
             </div>
             <div class="form-row">
-                Level : <span class="{{strtolower($bug->severity)}}">{{$bug->severity}}</span>
+                Level : <span class="${fn:toLowerCase(bug.severity)}">${bug.severity}</span>
             </div>
             <br/>
             <div class="form-row">
-                <strong>{{$bug->title}}</strong>
+                <strong>${bug.title}</strong>
             </div>
             <br/>
             <div class="form-row">
-                {{$bug->description}}
+                ${bug.description}
             </div>
             <br/>
-            <?php
-                if(isset($bugFiles) && count($bugFiles)>0){
+            
+                <c:if test="${bugFiles ne null && fn:length(bugFiles)>0}">
 
-                    $image_types= array('jpeg','jpg','gif','png', 'pdf', 'doc', 'docx');
+					<c:forEach var="bugFile" items="${bugFiles}">
 
-                    foreach($bugFiles as $bugFile){
+                        <!-- $extension = pathinfo($bugFile->file_name, PATHINFO_EXTENSION); -->
 
-                        $extension = pathinfo($bugFile->file_name, PATHINFO_EXTENSION);
+                        <div class='form-row'>
 
-                        echo "<div class='form-row'>";
-
+							<a href='${root}/download-bug/$bug->id'>${bugFile.fileName}</a>
+<!-- 
                         if(in_array($extension, $image_types))
-                            echo "<a href='$root/public/uploads/$bugFile->saved_file_name' target='_blank'><img class='bug-image' src='$root/public/uploads/$bugFile->saved_file_name'/></a>";
+                            <a href='${root}/public/uploads/${bugFile.savedFileName}' target='_blank'><img class='bug-image' src='${root}/public/uploads/${bugFile.savedFileName}'/></a>
                         else
-                            echo "<a href='$root/download-bug/$bug->id'>$bugFile->file_name</a>";
-
-                        echo "</div>";
-                    }
-                }
-            ?>
+                            <a href='${root}/download-bug/$bug->id'>${bugFile.fileName}</a>
+-->
+                        </div>
+                    
+                    </c:forEach>
+                    
+                </c:if>
 
             <br/>
             <div class="form-row">
-                <form action="{{$root}}/save-bug-comment" id="form-comment" method="post" target="ifr" enctype="multipart/form-data" onsubmit="return checkComment()">
+                <form action="${root}/save-bug-comment" id="form-comment" method="post" target="ifr" enctype="multipart/form-data" onsubmit="return checkComment()">
                     <textarea name="comment" rows="5" cols="40" placeholder="Add your comment"></textarea>
 
                     <br/><br/>

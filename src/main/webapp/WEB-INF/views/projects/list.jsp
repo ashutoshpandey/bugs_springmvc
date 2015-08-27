@@ -15,6 +15,8 @@
     @import url("<c:url value="/static/css/projects/list.css"/>");
 </style>
 
+	<jsp:include page="../includes/common.jsp"/>
+
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/jquery.dataTables.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/common.js"/>"></script>
@@ -30,7 +32,7 @@
 
         <div class="header">
             <div>
-                <a href="{{$root}}/create-project">Create project</a>
+                <a href="${root}/create-project">Create project</a>
             </div>
 
             <br/>

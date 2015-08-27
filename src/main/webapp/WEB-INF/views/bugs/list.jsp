@@ -32,7 +32,7 @@
 
         <div class="header">
             <div>
-                <a href="{{$root}}/create-bug">Create bug</a>
+                <a href="${root}/create-bug">Create bug</a>
             </div>
             <br/>
             <h1 class="form-header">Listing bugs</h1>

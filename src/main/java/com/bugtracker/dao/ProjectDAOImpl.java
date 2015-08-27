@@ -39,7 +39,8 @@ public class ProjectDAOImpl extends HibernateUtil implements ProjectDAO {
 		
 		Session session = getCurrentSession();
 		
-		Query query = session.createQuery("from Project as pr where pr.status='active'");
+		Query query = session.createQuery("from Project as pr where pr.status=:status");
+		query.setString("status", status);
 		
 		return (List<Project>)query.list();
 	}

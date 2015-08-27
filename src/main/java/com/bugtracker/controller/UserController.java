@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bugtracker.entity.BugUser;
 import com.bugtracker.entity.User;
@@ -27,6 +29,7 @@ public class UserController {
 	@Autowired
 	private BugService bugService;	
 
+	@RequestMapping("/user-section")
     public String userSection(ModelMap map, HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("userId");
@@ -53,6 +56,7 @@ public class UserController {
         return "users/user-section";
     }
 
+	@RequestMapping("/create-user")
     public String createUser(HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("userId");
@@ -62,6 +66,8 @@ public class UserController {
         return "users/create";
     }
 
+	@RequestMapping("/save-user")
+	@ResponseBody
     public String saveUser(User user, HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("userId");
@@ -82,6 +88,7 @@ public class UserController {
         }
     }
 
+	@RequestMapping("/profile")
     public String profile(ModelMap map, HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("userId");
@@ -102,19 +109,25 @@ public class UserController {
             return "redirect:/";
     }
 
+	@RequestMapping("/update-profile")
+	@ResponseBody
     public String updateProfile(User user, HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("userId");
-        if(null!=objUserId)
+        if(null==objUserId)
             return "not logged";
 
+        int userId = Integer.parseInt(objUserId.toString());
+        
         if(null != user){
 
             User exisingUser = service.findUserByEmail(user.getEmail());
 
-            if(null != exisingUser && exisingUser.getId() != user.getId())
+            if(null != exisingUser && exisingUser.getId() != userId)
                 return "Email already taken";
             else{
+            	user.setId(userId);
+            	
                 service.updateUser(user);
 
                 return "Profile updated successfully";
@@ -124,6 +137,7 @@ public class UserController {
             return "Invalid user";
     }
 
+	@RequestMapping("/edit-user")
     public String editUser(Integer userId, HttpServletRequest request, ModelMap map){
 
         if(null==userId)
@@ -143,10 +157,12 @@ public class UserController {
             return "redirect:/";
     }
 
+	@RequestMapping("/update-user")
+	@ResponseBody
     public String updateUser(User user, HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("current_edit_user");
-        if(null!=objUserId)
+        if(null==objUserId)
             return "invalid";
 
         if(null != user){
@@ -159,15 +175,18 @@ public class UserController {
             return "Invalid user";
     }
 
+	@RequestMapping("/list-users")
     public String listUsers(HttpServletRequest request){
 
         Object objUserId = request.getSession().getAttribute("userId");
-        if(null!=objUserId)
+        if(null==objUserId)
             return "redirect:/";
 
         return "users/list";
     }
 
+	@RequestMapping("/remove-user")
+	@ResponseBody
     public String removeUser(Integer userId){
 
         if(null!=userId) {
@@ -189,7 +208,8 @@ public class UserController {
     }
 
     /************** json methods ***************/
-
+	@RequestMapping("/data-list-users")
+	@ResponseBody
     public UserData dataListUsers(HttpServletRequest request){
 
     	UserData userData = new UserData();
