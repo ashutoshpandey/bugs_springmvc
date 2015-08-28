@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bugtracker.entity.Project;
@@ -57,8 +57,8 @@ public class ProjectController {
         return "done";
     }
 
-    @RequestMapping("/edit-project")
-    public String editProject(@RequestParam Integer id, ModelMap map, HttpServletRequest request){
+    @RequestMapping("/edit-project/{id}")
+    public String editProject(@PathVariable("id") Integer id, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
@@ -110,15 +110,13 @@ public class ProjectController {
             return "invalid";
     }
 
-    @RequestMapping("/remove-project")
+    @RequestMapping("/remove-project/{id}")
     @ResponseBody
-    public String removeProject(ModelMap map, HttpServletRequest request){
+    public String removeProject(@PathVariable("id") Integer id, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "not logged";
-
-        int id = Integer.parseInt(request.getParameter("id"));
 
         Project project = service.findProject(id);
 

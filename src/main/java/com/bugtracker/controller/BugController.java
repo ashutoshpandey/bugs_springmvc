@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -134,8 +135,8 @@ public class BugController {
         return "done";
     }
 
-    @RequestMapping("/edit-bug")
-    public String editBug(Integer id, ModelMap map, HttpServletRequest request){
+    @RequestMapping("/edit-bug/{id}")
+    public String editBug(@PathVariable("id") Integer id, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
@@ -183,15 +184,13 @@ public class BugController {
             return "invalid";
     }
 
-    @RequestMapping("/change-bug-status")
+    @RequestMapping("/change-bug-status/{id}")
     @ResponseBody
-    public String changeBugStatus(ModelMap map, HttpServletRequest request){
+    public String changeBugStatus(@PathVariable("id") Integer id, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "not logged";
-
-        int id = Integer.parseInt(request.getParameter("id"));
 
         Bug bug = service.findBug(id);
 
@@ -275,22 +274,22 @@ public class BugController {
         return "done";
     }
 
-    @RequestMapping("/bug-detail")
-    public String bugDetail(Integer bugId, ModelMap map, HttpServletRequest request){
+    @RequestMapping("/bug-detail/{id}")
+    public String bugDetail(@PathVariable("id") Integer id, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "redirect:/";
 
-        if(null!=bugId){
+        if(null!=id){
 
-            Bug bug = service.findBug(bugId);
+            Bug bug = service.findBug(id);
             Project project = projectService.findProject(bug.getProjectId());
 
             if(null!=bug && null!=project){
-                request.getSession().setAttribute("currentBugId", bugId);
+                request.getSession().setAttribute("currentBugId", id);
 
-                List<BugFile> bugFiles = service.getBugFiles(bugId);
+                List<BugFile> bugFiles = service.getBugFiles(id);
 
                 map.addAttribute("project", project);
                 map.addAttribute("bug", bug);
