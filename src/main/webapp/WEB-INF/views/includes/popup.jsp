@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!-- modal content -->
 <div id="popup_status">
     Change bug status <br/><br/>
@@ -12,6 +14,6 @@
 
 <!-- preload the images -->
 <div style='display:none'>
-    {{HTML::image(asset("public/images/logo.png", ''))}}
+	<img src="<c:url value="/static/images/logo.png"/>"/>
 </div>
-{{HTML::script(asset("/public/js/jquery.simplemodal.js"))}}
+<script type="text/javascript" src="<c:url value="/static/js/jquery.simplemodal.js"/>"></script>

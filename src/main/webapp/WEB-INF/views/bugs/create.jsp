@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html>
@@ -18,7 +19,7 @@
 
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/jquery.validate.min.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/static/js/bugs/common.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/common.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/bugs/create.js"/>"></script>
 
 </head>
@@ -29,11 +30,11 @@
 
         <jsp:include page="../includes/header.jsp"/>
 
-        <form id="form-bug" method="post" action="{{$root}}/save-bug" target="ifr" name="ifr" enctype="multipart/form-data">
+        <form id="form-bug" method="post" action="${root}/save-bug" target="ifr" name="ifr" enctype="multipart/form-data">
 
             <div class="header">
                 <div>
-                    <a href="{{$root}}/list-bugs/{{$projectId}}">View bugs</a> <br/>
+                    <a href="${root}/list-bugs/${projectId}">View bugs</a> <br/>
                 </div>
 
                 <br/>
@@ -62,18 +63,20 @@
                     </select>
                 </div>
 
-                <?php if(isset($users) && count($users)>0){?>
+                <c:if test="${users ne null && fn:length(users)>0}">
+                
                 <div class="form-label">Assign to</div>
                 <div class="form-row">
-                    <select name="users[]" multiple="multiple" style="min-height: 50px; max-width: 300px">
-                        <?php
-                            foreach($users as $user){
-                                echo "<option value='" . $user->id . "'>" . $user->name . "</option>";
-                            }
-                        ?>
+                    <select name="users" multiple="multiple" style="min-height: 50px; max-width: 300px">
+                    
+                    <c:forEach var="user" items="${users}">
+						<option value='${user.id}'>${user.name}</option>
+					</c:forEach>                        
+                        
                     </select>
                 </div>
-                <?php } ?>
+                
+                </c:if>
 
                 <br/>
 

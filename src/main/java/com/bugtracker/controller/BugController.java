@@ -1,5 +1,6 @@
 package com.bugtracker.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bugtracker.entity.Bug;
@@ -61,15 +63,13 @@ public class BugController {
             return "redirect:/";
     }
 
-    @RequestMapping("/save-bug")
+    @RequestMapping(value="/save-bug", method=RequestMethod.POST)
     @ResponseBody
-    public String saveBug(ModelMap map, HttpServletRequest request){
+    public String saveBug(Bug bug, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
             return "not logged";        
-
-        Bug bug = new Bug();
 
         bug.setTitle(request.getParameter("title"));
         bug.setDescription(request.getParameter("description"));
@@ -77,6 +77,7 @@ public class BugController {
         bug.setCreatedBy(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
         bug.setProjectId(Integer.parseInt(request.getSession().getAttribute("currentProjectId").toString()));
         bug.setStatus("active");
+        bug.setCreatedAt(new Date());
 
         service.saveBug(bug);
 /*
@@ -214,8 +215,8 @@ public class BugController {
             return "invalid";
     }
 
-    @RequestMapping("/list-bugs")
-    public String listBugs(Integer projectId, HttpServletRequest request){
+    @RequestMapping("/list-bugs/{projectId}")
+    public String listBugs(@PathVariable("projectId") Integer projectId, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)

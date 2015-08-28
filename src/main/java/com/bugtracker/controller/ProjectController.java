@@ -69,6 +69,8 @@ public class ProjectController {
         if(null != project){
 	        map.addAttribute("project", project);
 	        
+	        request.setAttribute("currentProjectId", id);
+	        
 	        return "projects/edit";
         }
         else
@@ -83,7 +85,11 @@ public class ProjectController {
         if(null==userId)
             return "not logged";
 
-        int id = Integer.parseInt(request.getParameter("id"));
+        Object currentProjectId = request.getSession().getAttribute("currentProjectId");
+        if(null==currentProjectId)
+            return "invalid";
+
+        int id = Integer.parseInt(currentProjectId.toString());
 
         Project project = service.findProject(id);
 

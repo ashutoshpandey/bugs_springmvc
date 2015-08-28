@@ -18,7 +18,7 @@
 	<jsp:include page="../includes/common.jsp"/>
 
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/static/js/jquery.dataTables.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/jquery.validate.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/common.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/projects/edit.js"/>"></script>
 
@@ -43,12 +43,12 @@
 
                 <div class="form-label">Project name</div>
                 <div class="form-row">
-                    <input id="name" name="name" class="input username" type="text" value="{{$project->name}}"/>
+                    <input id="name" name="name" class="input username" type="text" value="${project.name}"/>
                 </div>
 
                 <div class="form-label">Description</div>
                 <div class="form-row">
-                    <textarea id="description" name="description" class="input" rows="10">{{$project->description}}</textarea>
+                    <textarea id="description" name="description" class="input" rows="10">${project.description}</textarea>
                 </div>
 
             </div>

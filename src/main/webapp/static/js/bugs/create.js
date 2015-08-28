@@ -42,7 +42,7 @@ function addFile(){
 
     var file = "<div class='single-file'>";
     file += "<input type='file' name='file[]'/>";
-    file += "<img class='remove-file icon' src='" + root + "public/images/remove.png'/>";
+    file += "<img class='remove-file icon' src='" + root + "static/images/remove.png'/>";
     file += "</div>";
 
     $(".file-container").append(file);

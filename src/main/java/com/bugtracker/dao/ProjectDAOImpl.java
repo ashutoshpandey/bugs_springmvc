@@ -50,8 +50,8 @@ public class ProjectDAOImpl extends HibernateUtil implements ProjectDAO {
 		
 		Session session = getCurrentSession();
 		
-		Query query = session.createQuery("from Project as pr where pr.projectID=:projectID");
-		query.setInteger("projectID", projectId);
+		Query query = session.createQuery("from Project as pr where pr.id=:id");
+		query.setInteger("id", projectId);
 		
 		return query.list().isEmpty() ? null : (Project)query.list().get(0);
 	}

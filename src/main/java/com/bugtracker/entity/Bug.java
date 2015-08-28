@@ -17,8 +17,13 @@ public class Bug {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(name="description", length=255)
 	private String description;
+	
+	@Column(name="severity", length=255)
 	private String severity;
+	
+	@Column(name="title", length=255)
 	private String title;
 	
 	@Column(name="created_by")
@@ -28,6 +33,9 @@ public class Bug {
 	private int projectId;
 	
 	private String status;
+	
+	@Column(name="bug_type", length=255)
+	private String bugType;
 	
 	@Column(name="created_at")
 	private Date createdAt;

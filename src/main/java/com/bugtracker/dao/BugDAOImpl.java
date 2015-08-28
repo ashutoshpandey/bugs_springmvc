@@ -42,9 +42,9 @@ public class BugDAOImpl extends HibernateUtil implements BugDAO {
 		
 		Session session = getCurrentSession();
 		
-		Query query = session.createQuery("from Bug as bug where bug.projectID=:projectID and bug.bugType=:bugType");
+		Query query = session.createQuery("from Bug as bug where bug.projectId=:projectId and bug.bugType=:bugType");
 		query.setString("bugType" , bugType);
-		query.setInteger("projectID", projectId);
+		query.setInteger("projectId", projectId);
 		
 		return (List<Bug>)query.list();
 	}
