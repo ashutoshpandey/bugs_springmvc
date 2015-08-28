@@ -15,6 +15,8 @@
     @import url("<c:url value="/static/css/projects/edit.css"/>");
 </style>
 
+	<jsp:include page="../includes/common.jsp"/>
+
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/jquery.dataTables.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/common.js"/>"></script>
@@ -29,7 +31,7 @@
         <jsp:include page="../includes/header.jsp"/>
 
         <div style="margin-bottom: 20px;">
-            <a href="{{$root}}/list-projects">Project list</a>
+            <a href="${root}/list-projects">Project list</a>
 
             <br/><br/>
             <h1 class="form-header">Edit this project</h1>

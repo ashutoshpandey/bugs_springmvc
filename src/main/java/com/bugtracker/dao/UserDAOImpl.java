@@ -29,7 +29,7 @@ public class UserDAOImpl extends HibernateUtil implements UserDAO {
 		
 		Session session = getCurrentSession();
 		
-		Query query = session.createQuery("from User as user where user.userID=:userID");
+		Query query = session.createQuery("from User as user where user.id=:userID");
 		query.setInteger("userID", userId);
 		
 		return query.list().isEmpty() ? null : (User)query.list().get(0);

@@ -11,8 +11,9 @@
 <style type="text/css">
     @import url("<c:url value="/static/css/common.css"/>");
     @import url("<c:url value="/static/css/theme/transdmin.css"/>");
-    @import url("<c:url value="/static/css/users/create.css"/>");
 </style>
+
+	<jsp:include page="../includes/common.jsp"/>
 
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/jquery.validate.min.js"/>"></script>
@@ -31,7 +32,7 @@
 
             <div class="header">
                 <div>
-                    <a href="{{$root}}/list-users">View users</a> <br/>
+                    <a href="${root}/list-users">View users</a> <br/>
                 </div>
 
                 <br/>

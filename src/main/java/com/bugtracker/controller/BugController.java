@@ -47,7 +47,7 @@ public class BugController {
         if(null==userId)
             return "redirect:/";
 
-        Object projectId = request.getSession().getAttribute("currentProject");
+        Object projectId = request.getSession().getAttribute("currentProjectId");
 
         List<User> users = userService.getAllUsers();
 
@@ -74,7 +74,7 @@ public class BugController {
         bug.setDescription(request.getParameter("description"));
         bug.setSeverity(request.getParameter("severity"));
         bug.setCreatedBy(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
-        bug.setProjectId(Integer.parseInt(request.getSession().getAttribute("currentProject").toString()));
+        bug.setProjectId(Integer.parseInt(request.getSession().getAttribute("currentProjectId").toString()));
         bug.setStatus("active");
 
         service.saveBug(bug);
@@ -224,7 +224,7 @@ public class BugController {
 
         if(null!=projectId){
 
-            request.getSession().setAttribute("currentProject", projectId);
+            request.getSession().setAttribute("currentProjectId", projectId);
 
             return "bugs/list";
         }
@@ -295,6 +295,7 @@ public class BugController {
                 map.addAttribute("project", project);
                 map.addAttribute("bug", bug);
                 map.addAttribute("bugFiles", bugFiles);
+                map.addAttribute("imageTypes", new String[]{"jpeg","jpg","gif","png", "pdf", "doc", "docx"});
                 
                 return "bugs/detail";
             }
@@ -344,9 +345,9 @@ public class BugController {
         	return bugData;
         }
 
-        if(null != request.getSession().getAttribute("currentProject")){
+        if(null != request.getSession().getAttribute("currentProjectId")){
 
-        	int projectId = Integer.parseInt(request.getSession().getAttribute("currentProject").toString());
+        	int projectId = Integer.parseInt(request.getSession().getAttribute("currentProjectId").toString());
 
             String bugType = request.getParameter("bug_type");
         	

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bugtracker.entity.Project;
@@ -57,7 +58,7 @@ public class ProjectController {
     }
 
     @RequestMapping("/edit-project")
-    public String editProject(Integer id, ModelMap map, HttpServletRequest request){
+    public String editProject(@RequestParam Integer id, ModelMap map, HttpServletRequest request){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
@@ -65,9 +66,13 @@ public class ProjectController {
 
         Project project = service.findProject(id);
 
-        map.addAttribute("project", project);
-        
-        return "projects/edit";
+        if(null != project){
+	        map.addAttribute("project", project);
+	        
+	        return "projects/edit";
+        }
+        else
+        	return "redirect:/";
     }
 
     @RequestMapping("/update-project")
@@ -153,22 +158,18 @@ public class ProjectController {
         	return projectData;
         }
 
-        if(null != request.getSession().getAttribute("currentProject")){
+        String projectType = request.getParameter("project_type");
 
-            String projectType = request.getParameter("project_type");
+        if(null == projectType)
+        	projectType = "active";
+        
+        List<Project> projects = service.getProjects(projectType);
+
+        if(null!=projects && !projects.isEmpty()){
         	
-            List<Project> projects = service.getProjects(projectType);
-
-            if(null!=projects && !projects.isEmpty()){
-            	
-            	projectData.setProjects(projects);
-            	projectData.setFound(true);
-            	projectData.setMessage("logged");
-            }
-            else{
-            	projectData.setFound(false);
-            	projectData.setMessage("logged");
-            }
+        	projectData.setProjects(projects);
+        	projectData.setFound(true);
+        	projectData.setMessage("logged");
         }
         else{
         	projectData.setFound(false);

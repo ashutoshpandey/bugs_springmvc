@@ -12,8 +12,9 @@
     @import url("<c:url value="/static/css/jquery.dataTables.css"/>");
     @import url("<c:url value="/static/css/common.css"/>");
     @import url("<c:url value="/static/css/theme/transdmin.css"/>");
-    @import url("<c:url value="/static/css/users/list.css"/>");
 </style>
+
+	<jsp:include page="../includes/common.jsp"/>
 
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/jquery.dataTables.min.js"/>"></script>
@@ -30,7 +31,7 @@
 
         <div class="header">
             <div>
-                <a href="{{$root}}/create-user">Create user</a>
+                <a href="${root}/create-user">Create user</a>
             </div>
 
             <br/>

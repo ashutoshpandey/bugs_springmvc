@@ -11,11 +11,12 @@
 <style type="text/css">
     @import url("<c:url value="/static/css/common.css"/>");
     @import url("<c:url value="/static/css/theme/transdmin.css"/>");
-    @import url("<c:url value="/static/css/users/profile.css"/>");
 </style>
 
+	<jsp:include page="../includes/common.jsp"/>
+
     <script type="text/javascript" src="<c:url value="/static/js/jquery-1.10.2.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="/static/js/jquery.dataTables.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/jquery.validate.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/common.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/static/js/users/profile.js"/>"></script>
 
@@ -31,7 +32,7 @@
 
             <div class="header">
                 <div>
-                    <a href="{{$root}}/list-users">User list</a> <br/>
+                    <a href="${root}/list-users">User list</a> <br/>
                 </div>
 
                 <br/>
@@ -42,19 +43,19 @@
             <div class="content">
 
                 <div class="form-row">
-                    <input id="email" name="email" class="input" placeholder="Email" type="text" value="{{$user->email}}"/>
+                    <input id="email" name="email" class="input" placeholder="Email" type="text" value="${user.email}"/>
                 </div>
 
                 <div class="form-row">
-                    <input id="name" name="name" class="input" placeholder="Name" type="text" value="{{$user->name}}"/>
+                    <input id="name" name="name" class="input" placeholder="Name" type="text" value="${user.name}"/>
                 </div>
 
                 <div class="form-row">
-                    <input id="password" name="password" class="input" placeholder="Password" type="password" value="{{$user->password}}"/>
+                    <input id="password" name="password" class="input" placeholder="Password" type="password" value="${user.password}"/>
                 </div>
 
                 <div class="form-row">
-                    <input id="confirm_password" name="confirm_password" class="input" placeholder="Confirm password" type="password" value="{{$user->password}}"/>
+                    <input id="confirm_password" name="confirm_password" class="input" placeholder="Confirm password" type="password" value="${user.password}"/>
                 </div>
             </div>
 
