@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bugtracker.entity.Project;
+import com.bugtracker.entity.User;
 import com.bugtracker.pojo.ProjectData;
 import com.bugtracker.service.ProjectService;
 
@@ -49,7 +50,7 @@ public class ProjectController {
 
         project.setName(request.getParameter("name"));
         project.setDescription(request.getParameter("description"));
-        project.setCreatedBy(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
+        project.setUser(new User(Integer.parseInt(request.getSession().getAttribute("userId").toString())));
         project.setStatus("active");
 
         service.saveProject(project);

@@ -12,8 +12,9 @@ function getBugs(){
     var status = $("input[name='bug_type']:checked").val();
 
     $.ajax({
-        url: root + 'data-list-bugs/' + status,
+        url: root + 'data-list-bugs',
         type: 'get',
+        data: 'status=' + status,
         dataType: 'json',
         success: function(result){
 

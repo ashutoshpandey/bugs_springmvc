@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +22,6 @@ public class BugCommentFile {
 	@Column(name="file_name")
 	private String fileName;
 	
-	@Column(name="bug_comment_id")
-	private int bugCommentId;
-	
 	@Column(name="saved_file_name")
 	private String savedFileName;
 
@@ -31,6 +30,13 @@ public class BugCommentFile {
 	
 	@Column(name="updated_at")
 	private Date updatedAt;
+
+	@Column(name="status")
+	private String status;
+	
+	@ManyToOne
+	@JoinColumn(name="bug_comment_id")
+	private BugComment bugComment;
 
 	public int getId() {
 		return id;
@@ -46,14 +52,6 @@ public class BugCommentFile {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-
-	public int getBugCommentId() {
-		return bugCommentId;
-	}
-
-	public void setBugCommentId(int bugCommentId) {
-		this.bugCommentId = bugCommentId;
 	}
 
 	public String getSavedFileName() {
@@ -78,5 +76,21 @@ public class BugCommentFile {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public BugComment getBugComment() {
+		return bugComment;
+	}
+
+	public void setBugComment(BugComment bugComment) {
+		this.bugComment = bugComment;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

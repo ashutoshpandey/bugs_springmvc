@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,8 +25,9 @@ public class BugFile {
 	@Column(name="saved_file_name")
 	private String savedFileName;
 
-	@Column(name="bug_id")
-	private int bugId;
+	@ManyToOne
+	@JoinColumn(name="bug_id")
+	private Bug bug;
 
 	private String status;
 
@@ -58,14 +61,6 @@ public class BugFile {
 		this.savedFileName = savedFileName;
 	}
 
-	public int getBugId() {
-		return bugId;
-	}
-
-	public void setBugId(int bugId) {
-		this.bugId = bugId;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -88,5 +83,13 @@ public class BugFile {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public Bug getBug() {
+		return bug;
+	}
+
+	public void setBug(Bug bug) {
+		this.bug = bug;
 	}
 }

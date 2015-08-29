@@ -1,12 +1,16 @@
 package com.bugtracker.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,12 +30,6 @@ public class Bug {
 	@Column(name="title", length=255)
 	private String title;
 	
-	@Column(name="created_by")
-	private int createdBy;
-	
-	@Column(name="project_id")
-	private int projectId;
-	
 	private String status;
 	
 	@Column(name="bug_type", length=255)
@@ -42,6 +40,30 @@ public class Bug {
 	
 	@Column(name="updated_at")
 	private Date updatedAt;
+	
+	@OneToMany(mappedBy="bug")
+	private List<BugComment> bugComments;
+	
+	@OneToMany(mappedBy="bug")
+	private List<BugFile> bugFiles;
+	
+	@OneToMany(mappedBy="bug")
+	private List<BugUser> bugUsers;
+
+	@ManyToOne
+	@JoinColumn(name="project_id")
+	private Project project;
+
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
+
+	public Bug(int id) {
+		this.id = id;
+	}
+	
+	public Bug(){		
+	}
 
 	public int getId() {
 		return id;
@@ -65,22 +87,6 @@ public class Bug {
 
 	public void setSeverity(String severity) {
 		this.severity = severity;
-	}
-
-	public int getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public int getProjectId() {
-		return projectId;
-	}
-
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
 	}
 
 	public String getStatus() {
@@ -121,5 +127,45 @@ public class Bug {
 
 	public void setBugType(String bugType) {
 		this.bugType = bugType;
+	}
+
+	public List<BugComment> getBugComments() {
+		return bugComments;
+	}
+
+	public List<BugFile> getBugFiles() {
+		return bugFiles;
+	}
+
+	public List<BugUser> getBugUsers() {
+		return bugUsers;
+	}
+
+	public void setBugComments(List<BugComment> bugComments) {
+		this.bugComments = bugComments;
+	}
+
+	public void setBugFiles(List<BugFile> bugFiles) {
+		this.bugFiles = bugFiles;
+	}
+
+	public void setBugUsers(List<BugUser> bugUsers) {
+		this.bugUsers = bugUsers;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

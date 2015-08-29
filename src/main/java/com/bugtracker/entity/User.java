@@ -1,12 +1,14 @@
 package com.bugtracker.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -37,6 +39,22 @@ public class User {
 	
 	@Column(name="updated_at")
 	private Date updatedAt;
+	
+	@OneToMany(mappedBy="user")
+	private List<Project> projects;
+	
+	@OneToMany(mappedBy="user")
+	private List<Bug> bugs;
+	
+	@OneToMany(mappedBy="user")
+	private List<BugUser> bugUsers;
+
+	public User(){		
+	}
+	
+	public User(int id) {
+		this.id = id;
+	}
 
 	public Date getCreatedAt() {
 		return createdAt;
@@ -116,5 +134,29 @@ public class User {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public List<Bug> getBugs() {
+		return bugs;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
+	public void setBugs(List<Bug> bugs) {
+		this.bugs = bugs;
+	}
+
+	public List<BugUser> getBugUsers() {
+		return bugUsers;
+	}
+
+	public void setBugUsers(List<BugUser> bugUsers) {
+		this.bugUsers = bugUsers;
 	}
 }

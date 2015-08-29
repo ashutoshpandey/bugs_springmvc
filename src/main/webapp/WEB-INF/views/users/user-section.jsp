@@ -74,7 +74,7 @@
 
                     <c:set var="project" value="${userBug.bug.project}"/>
 
-                    <b>${i}.</b> <u>${project.name}</u> : <a href='${root}/bug-detail/${userBug.bug_id}'>${userBug.bug.title}</a><br/><br/>";
+                    <b>${i}.</b> <u>${project.name}</u> : <a href='${root}/bug-detail/${userBug.bug.id}'>${userBug.bug.title}</a><br/><br/>";
                 </c:forEach>
         </c:if>
     </div>

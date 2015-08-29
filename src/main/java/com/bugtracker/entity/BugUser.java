@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,12 +18,6 @@ public class BugUser {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="bug_id")
-	private int bugId;
-	
-	@Column(name="user_id")
-	private int userId;
 
 	private String status;
 	
@@ -31,28 +27,20 @@ public class BugUser {
 	@Column(name="updated_at")
 	private Date updatedAt;
 
+	@ManyToOne
+	@JoinColumn(name="bug_id")
+	private Bug bug;
+
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
+
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getBugId() {
-		return bugId;
-	}
-
-	public void setBugId(int bugId) {
-		this.bugId = bugId;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	public String getStatus() {
@@ -77,6 +65,22 @@ public class BugUser {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public Bug getBug() {
+		return bug;
+	}
+
+	public void setBug(Bug bug) {
+		this.bug = bug;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

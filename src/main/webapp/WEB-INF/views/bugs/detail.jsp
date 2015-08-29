@@ -1,5 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"  %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -43,7 +44,7 @@
             </div>
 
             <div class="form-row">
-                Posted by : <span style="color:#478bff; font-weight: 700">${bug.user.name}</span> on <b>( {{date('d-M-Y h:i A', strtotime($bug->created_at))} )</b>
+                Posted by : <span style="color:#478bff; font-weight: 700">${bug.user.name}</span> on <b>( <fmt:formatDate type="both" value="${bug.createdAt}" timeStyle="short" /> )</b>
             </div>
             <div class="form-row">
                 Level : <span class="${fn:toLowerCase(bug.severity)}">${bug.severity}</span>
@@ -66,7 +67,7 @@
 
                         <div class='form-row'>
 
-							<a href='${root}/download-bug/$bug->id'>${bugFile.fileName}</a>
+							<a href='${root}/download-bug/${bug.id}'>${bugFile.fileName}</a>
 <!-- 
                         if(in_array($extension, $image_types))
                             <a href='${root}/public/uploads/${bugFile.savedFileName}' target='_blank'><img class='bug-image' src='${root}/public/uploads/${bugFile.savedFileName}'/></a>

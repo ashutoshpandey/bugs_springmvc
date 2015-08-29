@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.bugtracker.dao.BugDAO;
 import com.bugtracker.entity.Bug;
 import com.bugtracker.entity.BugComment;
+import com.bugtracker.entity.BugCommentFile;
 import com.bugtracker.entity.BugFile;
 import com.bugtracker.entity.BugUser;
 
@@ -119,5 +120,17 @@ public class BugServiceImpl implements BugService {
 		bugUser.setUpdatedAt(today);
 
 		return dao.saveBugUser(bugUser);
+	}
+
+	@Override
+	public boolean saveBugCommentFile(BugCommentFile bugCommentFile) {
+
+		return dao.saveBugCommentFile(bugCommentFile);
+	}
+
+	@Override
+	public boolean changeBugUserStatus(int id, String status) {
+
+		return dao.changeBugUserStatus(id, status);
 	}
 }

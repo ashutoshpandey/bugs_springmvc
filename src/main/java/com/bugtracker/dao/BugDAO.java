@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bugtracker.entity.Bug;
 import com.bugtracker.entity.BugComment;
+import com.bugtracker.entity.BugCommentFile;
 import com.bugtracker.entity.BugFile;
 import com.bugtracker.entity.BugUser;
 
@@ -30,4 +31,8 @@ public interface BugDAO {
 	boolean saveBugFile(BugFile bugFile);
 
 	boolean saveBugUser(BugUser bugUser);
+
+	boolean saveBugCommentFile(BugCommentFile bugCommentFile);
+
+	boolean changeBugUserStatus(int id, String status);
 }
