@@ -38,12 +38,12 @@ public class BugDAOImpl extends HibernateUtil implements BugDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Bug> getBugs(int projectId, String bugType) {
+	public List<Bug> getBugs(int projectId, String status) {
 		
 		Session session = getCurrentSession();
-		
-		Query query = session.createQuery("from Bug as bug where bug.projectId=:projectId and bug.bugType=:bugType");
-		query.setString("bugType" , bugType);
+		System.out.println(projectId + " , " + status);
+		Query query = session.createQuery("from Bug as bug where bug.projectId=:projectId and bug.status=:status");
+		query.setString("status" , status);
 		query.setInteger("projectId", projectId);
 		
 		return (List<Bug>)query.list();
@@ -115,6 +115,26 @@ public class BugDAOImpl extends HibernateUtil implements BugDAO {
 		query.setInteger("userId", userId);
 		
 		return (List<BugUser>)query.list();
+	}
+
+	@Override
+	public boolean saveBugFile(BugFile bugFile) {
+
+		Session session = getCurrentSession();
+		
+		session.save(bugFile);          
+		
+		return true;
+	}
+
+	@Override
+	public boolean saveBugUser(BugUser bugUser) {
+
+		Session session = getCurrentSession();
+		
+		session.save(bugUser);          
+
+		return true;
 	}
 
 }

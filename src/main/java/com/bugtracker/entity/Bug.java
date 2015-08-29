@@ -114,4 +114,12 @@ public class Bug {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	public String getBugType() {
+		return bugType;
+	}
+
+	public void setBugType(String bugType) {
+		this.bugType = bugType;
+	}
 }

@@ -1,5 +1,6 @@
 package com.bugtracker.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,20 @@ public class BugServiceImpl implements BugService {
 	@Override
 	public boolean saveBug(Bug bug) {
 		
+		Date today = new Date();
+		
+		bug.setCreatedAt(today);
+		bug.setUpdatedAt(today);
+		
 		return dao.saveBug(bug);
 	}
 
 	@Override
 	public boolean updateBug(Bug bug) {
+		
+		Date today = new Date();
+		
+		bug.setUpdatedAt(today);
 		
 		return dao.updateBug(bug);
 	}
@@ -32,13 +42,17 @@ public class BugServiceImpl implements BugService {
 	@Override
 	public boolean changeBugStatus(Bug bug) {
 		
+		Date today = new Date();
+		
+		bug.setUpdatedAt(today);
+		
 		return dao.updateBug(bug);
 	}
 
 	@Override
-	public List<Bug> getBugs(int projectId, String bugType) {
+	public List<Bug> getBugs(int projectId, String status) {
 		
-		return dao.getBugs(projectId, bugType);
+		return dao.getBugs(projectId, status);
 	}
 
 	@Override
@@ -83,5 +97,27 @@ public class BugServiceImpl implements BugService {
 	public List<BugUser> getUserBugs(Integer userId) {
 		
 		return dao.getUserBugs(userId);
+	}
+
+	@Override
+	public boolean saveBugFile(BugFile bugFile) {
+		
+		Date today = new Date();
+		
+		bugFile.setCreatedAt(today);
+		bugFile.setUpdatedAt(today);
+
+		return dao.saveBugFile(bugFile);
+	}
+
+	@Override
+	public boolean saveBugUser(BugUser bugUser) {
+		
+		Date today = new Date();
+		
+		bugUser.setCreatedAt(today);
+		bugUser.setUpdatedAt(today);
+
+		return dao.saveBugUser(bugUser);
 	}
 }

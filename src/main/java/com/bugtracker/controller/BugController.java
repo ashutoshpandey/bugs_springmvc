@@ -1,8 +1,11 @@
 package com.bugtracker.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,12 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bugtracker.entity.Bug;
 import com.bugtracker.entity.BugComment;
 import com.bugtracker.entity.BugFile;
+import com.bugtracker.entity.BugUser;
 import com.bugtracker.entity.Project;
 import com.bugtracker.entity.User;
 import com.bugtracker.pojo.BugCommentData;
@@ -37,12 +42,6 @@ public class BugController {
 	@Autowired
 	private ProjectService projectService;
 	
-//    public String __construct(ModelMap map, HttpServletRequest request){
-//        View::share("root", URL::to("/"));
-//        View::share("name", request.getSession().getAttribute("name"));
-//        View::share("userType", request.getSession().getAttribute("userType"));
-//    }
-
     @RequestMapping("/create-bug")
     public String createBug(ModelMap map, HttpServletRequest request){
 
@@ -63,9 +62,9 @@ public class BugController {
             return "redirect:/";
     }
 
-    @RequestMapping(value="/save-bug", method=RequestMethod.POST)
+    @RequestMapping("/save-bug")
     @ResponseBody
-    public String saveBug(Bug bug, ModelMap map, HttpServletRequest request){
+    public String saveBug(Bug bug, ModelMap map, HttpServletRequest request, @RequestParam("file") MultipartFile[] files, @RequestParam String users){
 
         Object userId = request.getSession().getAttribute("userId");
         if(null==userId)
@@ -74,65 +73,75 @@ public class BugController {
         bug.setTitle(request.getParameter("title"));
         bug.setDescription(request.getParameter("description"));
         bug.setSeverity(request.getParameter("severity"));
+        bug.setBugType(request.getParameter("bugType"));
         bug.setCreatedBy(Integer.parseInt(request.getSession().getAttribute("userId").toString()));
         bug.setProjectId(Integer.parseInt(request.getSession().getAttribute("currentProjectId").toString()));
         bug.setStatus("active");
         bug.setCreatedAt(new Date());
 
         service.saveBug(bug);
-/*
-        $files = Input::file("file");
-        if(isset($files))
-            $fileCount = count($files);
-        else
-            $fileCount = 0;
+        
+        if(files!=null && files.length>0){
+        	
+        	String uploadPath = request.getSession().getServletContext().getRealPath("/uploads/");
+        			
+        	for (MultipartFile file : files) {
 
-        $users(request.getParameter(("users");
+        		String fileName = file.getOriginalFilename();        		
+        		String savedFileName = UUID.randomUUID().toString();
+        				
+        		String filePath = uploadPath + "/" + savedFileName;
 
-        if(isset($users))
-            $userCount = count($users);
-        else
-            $userCount = 0;
+        		File dest = new File(filePath);
 
-        if($fileCount>0){
-            foreach($files as $file) {
-                $destinationPath = "public/uploads";
+        		try {
+        			file.transferTo(dest);
+        		} catch (IllegalStateException e) {
+        			e.printStackTrace();
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        		} catch (Exception e) {
+        			e.printStackTrace();
+        		}
+        		
+                BugFile bugFile = new BugFile();
 
-                $savedFileName = date("Ymdhis");
+                bugFile.setBugId(bug.getId());
+                bugFile.setFileName(fileName);
+                bugFile.setSavedFileName(savedFileName);
+                bugFile.setStatus("active");
 
-                $filename = $file->getClientOriginalName();
-                $file->move($destinationPath, $savedFileName);
+                service.saveBugFile(bugFile);
+                
+                System.out.println("Saved file : " + filePath);
+        	}
+        }
 
-                $bugFile = new BugFile();
+        String[] userIds = null;
+        if(null != users){
+            userIds = users.split(",");
+        }
 
-                $bugFile->bug_id = bug.setid;
-                $bugFile->file_name = $filename;
-                $bugFile->saved_file_name = $savedFileName;
-                $bugFile->status = "active";
+        if(null != userIds && userIds.length>0){
 
-                $bugFile->save();
+            for(String strUserId : userIds){
+                
+            	BugUser bugUser = new BugUser();
+
+                bugUser.setBugId(bug.getId());
+                bugUser.setUserId(Integer.parseInt(strUserId));
+                bugUser.setStatus("active");
+
+                service.saveBugUser(bugUser);
+
+                User user = userService.findUser(Integer.parseInt(strUserId));
+                Project project = projectService.findProject(bug.getProjectId());
+
+                if(null != user)
+                    sendNewBugEmail(user.getName(), user.getEmail(), project.getName(), bug.getTitle(), bug.getDescription(), null);
             }
         }
 
-        if($userCount>0){
-
-            foreach($users as int userId){
-                $bugUser = new BugUser();
-
-                $bugUser->bug_id = bug.setid;
-                $bugUser->user_id = int userId;
-                $bugUser->status = "active";
-
-                $bugUser->save();
-
-                $user = User::finduserId;
-                $project = Project::find(bug.setproject_id);
-
-                if(isset($user))
-                    $this->sendNewBugEmail($user->name, $user->email, $project->name, bug.settitle, bug.setdescription, null);
-            }
-        }
-*/
         return "done";
     }
 
@@ -204,7 +213,7 @@ public class BugController {
                 
                 service.changeBugStatus(bug);
 
-                //BugUser::where("bug_id", "=", bug.setid) ->update(["status" => bug.setstatus]);
+                //BugUser::where("bug_id", "=", bug.setid) .update(["status" => bug.setstatus]);
 
                 return "done";
             }
@@ -258,17 +267,17 @@ public class BugController {
 
                 $savedFileName = date("Ymdhis");
 
-                $filename = $file->getClientOriginalName();
-                $file->move($destinationPath, $savedFileName);
+                $filename = $file.getClientOriginalName();
+                $file.move($destinationPath, $savedFileName);
 
                 $bugCommentFile = new BugCommentFile();
 
-                $bugCommentFile->bug_comment_id = bugComment.setid;
-                $bugCommentFile->file_name = $filename;
-                $bugCommentFile->saved_file_name = $savedFileName;
-                $bugCommentFile->status = "active";
+                $bugCommentFile.bug_comment_id = bugComment.setid;
+                $bugCommentFile.file_name = $filename;
+                $bugCommentFile.saved_file_name = $savedFileName;
+                $bugCommentFile.status = "active";
 
-                $bugCommentFile->save();
+                $bugCommentFile.save();
             }
         }
 */
@@ -331,10 +340,10 @@ public class BugController {
 
     /****************** json methods ***********************/
 
-    @RequestMapping("/data-list-bugs")
+    @RequestMapping("/data-list-bugs/{status}")
     @ResponseBody
-    public BugData dataListBugs(ModelMap map, HttpServletRequest request){
-
+    public BugData dataListBugs(@PathVariable("status") String status, ModelMap map, HttpServletRequest request){
+System.out.println("Status = " + status);
     	BugData bugData = new BugData();
     	
         Object userId = request.getSession().getAttribute("userId");
@@ -349,9 +358,7 @@ public class BugController {
 
         	int projectId = Integer.parseInt(request.getSession().getAttribute("currentProjectId").toString());
 
-            String bugType = request.getParameter("bug_type");
-        	
-            List<Bug> bugs = service.getBugs(projectId, bugType);
+            List<Bug> bugs = service.getBugs(projectId, status);
 
             if(null!=bugs && !bugs.isEmpty()){
             	
@@ -421,9 +428,9 @@ public class BugController {
         data.put("bugTitle", bugTitle);
 
 //        $result = Mail::send("emails.new-bug", $data, function($message) use ($email, $attachments) {
-//            $message->to($email);
-//            $message->subject("New bug added at yogasmoga");
-//            $message->from("info@yogasmoga.com");
+//            $message.to($email);
+//            $message.subject("New bug added at yogasmoga");
+//            $message.from("info@yogasmoga.com");
 //        });
 
 //            if(isset($attachments) && count($attachments)>0) {
@@ -433,7 +440,7 @@ public class BugController {
 //                    $mime = "application/pdf";
 //                    $as = "pdf-report.zip";
 //
-//                    $message->attach($attachment,
+//                    $message.attach($attachment,
 //                                    array(
 //                                        "as" => $as,
 //                                        "mime" => $mime

@@ -23,8 +23,8 @@ public class BugFile {
 	@Column(name="saved_file_name")
 	private String savedFileName;
 
-	@Column(name="bug_comment_id")
-	private int bugCommentId;
+	@Column(name="bug_id")
+	private int bugId;
 
 	private String status;
 
@@ -58,12 +58,12 @@ public class BugFile {
 		this.savedFileName = savedFileName;
 	}
 
-	public int getBugCommentId() {
-		return bugCommentId;
+	public int getBugId() {
+		return bugId;
 	}
 
-	public void setBugCommentId(int bugCommentId) {
-		this.bugCommentId = bugCommentId;
+	public void setBugId(int bugId) {
+		this.bugId = bugId;
 	}
 
 	public String getStatus() {

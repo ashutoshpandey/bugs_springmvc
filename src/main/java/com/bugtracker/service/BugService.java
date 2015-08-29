@@ -21,7 +21,7 @@ public interface BugService {
 
 	List<BugFile> getBugFiles(Integer bugId);
 
-	List<Bug> getBugs(int projectId, String bugType);
+	List<Bug> getBugs(int projectId, String status);
 
     List<BugComment> getBugComments(int bugId);
 
@@ -30,4 +30,8 @@ public interface BugService {
 	int getBugCount(String type);
 
 	List<BugUser> getUserBugs(Integer userId);
+
+	boolean saveBugFile(BugFile bugFile);
+
+	boolean saveBugUser(BugUser bugUser);
 }

@@ -13,7 +13,7 @@ public interface BugDAO {
 
 	boolean updateBug(Bug bug);
 
-	List<Bug> getBugs(int projectId, String bugType);
+	List<Bug> getBugs(int projectId, String status);
 
 	boolean saveBugComment(BugComment bugComment);
 
@@ -26,4 +26,8 @@ public interface BugDAO {
 	int getBugCount(String type);
 
 	List<BugUser> getUserBugs(Integer userId);
+
+	boolean saveBugFile(BugFile bugFile);
+
+	boolean saveBugUser(BugUser bugUser);
 }

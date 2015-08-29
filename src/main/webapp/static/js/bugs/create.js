@@ -20,7 +20,6 @@ $(function(){
 
         var result = $(this).contents().find('body').html();
 
-
         if(result.indexOf('not logged')>-1) {
             window.location.replace(root);
             return;
@@ -41,7 +40,7 @@ $(function(){
 function addFile(){
 
     var file = "<div class='single-file'>";
-    file += "<input type='file' name='file[]'/>";
+    file += "<input type='file' name='file'/>";
     file += "<img class='remove-file icon' src='" + root + "static/images/remove.png'/>";
     file += "</div>";
 
